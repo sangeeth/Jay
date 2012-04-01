@@ -26,8 +26,8 @@ import jay.lang.annotation.FaultCodeDef;
  * handy. The following example shows how to achieve the same.
  * 
  * <pre>
- * File srcFile = new File("/home/cisco/");
- * File destFile = new File("/home/cisco/hello.txt");
+ * File srcFile = new File("/home/corvid/");
+ * File destFile = new File("/home/corvid/hello.txt");
  * 
  * try {
  *     FileCopyAPI.copy(srcFile, destFile, true);
