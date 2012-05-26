@@ -2,7 +2,7 @@ package jay.lang;
 /**
  * This fault code enumerates the default set of faults any application might need.
  * 
- * @author sangkuma
+ * @author sangeeth
  * @version 1.0.0
  * 
  * @see FaultDefinition

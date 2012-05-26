@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 /**
  * This abstract class represents a basic implementation of {@link IFaultMessageProvider} interface.
  * 
- * @author sangkuma
+ * @author sangeeth
  * @version 1.0.0
  */
 abstract public class AbstractFaultMessageProvider implements IFaultMessageProvider {

@@ -9,7 +9,7 @@ package jay.lang;
  *    <li>details - the details including what is the cause and what could be the remedy (or recommended user action)</li>
  * </ul>
  * 
- * @author sangkuma
+ * @author sangeeth
  * @version 1.0.0
  */
 public class FaultMessage implements IFaultMessage {

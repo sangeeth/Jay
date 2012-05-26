@@ -19,7 +19,7 @@ package jay.lang;
  * }
  * </code>
  *  
- * @author sangkuma
+ * @author sangeeth
  * @version 1.0.0
  */
 abstract public class AbstractEnum implements IEnumable {

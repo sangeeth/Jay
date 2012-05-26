@@ -26,7 +26,7 @@ import jay.lang.IFaultMessageProvider;
  * }
  * </pre>
  * 
- * @author sangkuma
+ * @author sangeeth
  * @version 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)

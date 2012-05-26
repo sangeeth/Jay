@@ -33,7 +33,7 @@ import jay.lang.annotation.ResourceBundleSource;
  * }
  * </pre>
  * 
- * @author sangkuma
+ * @author sangeeth
  * @version 1.0.0
  * 
  * @see CategoryId

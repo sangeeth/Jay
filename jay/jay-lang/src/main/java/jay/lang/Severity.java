@@ -2,7 +2,7 @@ package jay.lang;
 /**
  * This enum represents the commonly used severity levels.
  * 
- * @author sangkuma
+ * @author sangeeth
  * @version 1.0.0
  */
 public enum Severity implements ISeverity {

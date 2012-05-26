@@ -14,7 +14,7 @@ import jay.lang.annotation.FaultCodeDef;
  *    <li>locale - the locale in which the fault details are created initially</li> 
  * </ul>
  * 
- * @author sangkuma
+ * @author sangeeth
  * @version 1.0.0
  * 
  * @see IFaultCode

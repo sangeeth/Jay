@@ -5,7 +5,7 @@ package jay.lang;
  * 
  * <b>WARNING:</b> Presently, this class is in its most primitive stage, hence not recommended for use.
  *  
- * @author sangkuma
+ * @author sangeeth
  * @version 1.0.0
  */
 public class FaultManager {

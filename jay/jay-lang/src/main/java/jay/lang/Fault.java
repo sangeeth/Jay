@@ -46,7 +46,7 @@ import jay.lang.annotation.FaultCodeDef;
  * This class implements {@link IPurgable}, denoting that once the calling routine is done with 
  * using the fault, it is recommended to invoke {@link #purge()} method. This helps garbage collection.
  * 
- * @author sangkuma
+ * @author sangeeth
  * @version 1.0.0
  */
 public class Fault implements Serializable, IPurgable {

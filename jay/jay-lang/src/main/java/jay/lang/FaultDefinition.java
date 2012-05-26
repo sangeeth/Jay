@@ -28,7 +28,7 @@ import jay.lang.annotation.ResourceBundleSource;
  * 
  * The fault definitions are cached locally using java.util.WeakHashMap. 
  * 
- * @author sangkuma
+ * @author sangeeth
  * @version 1.0.0
  * 
  * @see IFaultCode
