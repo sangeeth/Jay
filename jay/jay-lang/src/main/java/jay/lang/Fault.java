@@ -339,9 +339,8 @@ public class Fault implements Serializable, IPurgable {
      * A typical category id should be 3 to 5 characters. 
      * For example: 
      * <ul>
-     *   <li>CSO - Referring Cisco</li>
-     *   <li>CRE - Referring Connected Real Estate</li>
-     *   <li>CSDP - Referring Cisco Service Delivery Platform</li>
+     *   <li>COR - Referring Corvid Foundation</li>
+     *   <li>ORA - Referring Oracle</li>
      * </ul>
      */
     public void setCategoryId(String categoryId) {

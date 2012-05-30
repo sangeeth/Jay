@@ -6,9 +6,6 @@ import corvid.unit.EnumTestHelper;
 
 /**
  * This test class is just for code coverage.
- * 
- * @author sangkuma
- *
  */
 public class TestEnumsForCodeCoverage {
     @Test

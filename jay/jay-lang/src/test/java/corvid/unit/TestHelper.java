@@ -14,7 +14,7 @@ import org.junit.Assert;
 
 public class TestHelper {
     private static final String DEFAULT_DATA_LOCATION = "test/data";
-    private static final String DEFAULT_WORK_LOCATION = System.getProperty("java.io.tmpdir") + "/cisco-junit";
+    private static final String DEFAULT_WORK_LOCATION = System.getProperty("java.io.tmpdir") + "/jay-unit";
     
     public static File getTestDataDir() {
         String dataDirValue = System.getProperty("test.data.dir", DEFAULT_DATA_LOCATION);

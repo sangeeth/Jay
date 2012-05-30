@@ -83,13 +83,13 @@ public class TestFaultDefinition {
     public void test_newInstance() {
         FaultDefinition faultDefinition = FaultDefinition.valueOf(ExampleFaultCode.ACCESS_DENIED);
         
-        Object [] messageArgs = {"sangkuma"};
+        Object [] messageArgs = {"sangeeth"};
         Fault fault = faultDefinition.newInstance(messageArgs);
         
         FaultMessage expectedMessage = new FaultMessage();
         expectedMessage.setSummary("Access denied");
-        expectedMessage.setDetails("The user sangkuma is either not registered or doesn't have sufficient privileges to access the system.");
-        expectedMessage.setFormattedText("EG-1001: Access denied\nThe user sangkuma is either not registered or does not have sufficient privileges to access the system.");
+        expectedMessage.setDetails("The user sangeeth is either not registered or doesn't have sufficient privileges to access the system.");
+        expectedMessage.setFormattedText("EG-1001: Access denied\nThe user sangeeth is either not registered or does not have sufficient privileges to access the system.");
         
         AssertEx.assertFault(ExampleFaultCode.ACCESS_DENIED, 
                             faultDefinition, 
@@ -110,13 +110,13 @@ public class TestFaultDefinition {
         Locale locale = new Locale("fr");
         FaultDefinition faultDefinition = FaultDefinition.valueOf(ExampleFaultCode.ACCESS_DENIED);
         
-        Object [] messageArgs = {"sangkuma"};
+        Object [] messageArgs = {"sangeeth"};
         Fault fault = faultDefinition.newInstance(locale, messageArgs);
         
         FaultMessage expectedMessage = new FaultMessage();
         expectedMessage.setSummary("FRENCH: Access denied");
-        expectedMessage.setDetails("FRENCH: The user sangkuma is either not registered or does not have sufficient privileges to access the system.");
-        expectedMessage.setFormattedText("EG-1001: FRENCH: Access denied\nFRENCH: The user sangkuma is either not registered or does not have sufficient privileges to access the system.");
+        expectedMessage.setDetails("FRENCH: The user sangeeth is either not registered or does not have sufficient privileges to access the system.");
+        expectedMessage.setFormattedText("EG-1001: FRENCH: Access denied\nFRENCH: The user sangeeth is either not registered or does not have sufficient privileges to access the system.");
         
         AssertEx.assertFault(ExampleFaultCode.ACCESS_DENIED, 
                             faultDefinition, 
