@@ -3,33 +3,33 @@ package jay.data;
 import java.io.Serializable;
 
 public class SortField implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public static enum SortOrder {
-		ASC, DESC
-	}
+    public static enum SortOrder {
+        ASC, DESC
+    }
 
-	private SortOrder sortOrder;
+    private SortOrder sortOrder;
 
-	private String fieldName;
+    private String fieldName;
 
-	public SortField() {
-		this.sortOrder = SortOrder.ASC;
-	}
+    public SortField() {
+        this.sortOrder = SortOrder.ASC;
+    }
 
-	public SortOrder getSortOrder() {
-		return sortOrder;
-	}
+    public SortOrder getSortOrder() {
+        return sortOrder;
+    }
 
-	public void setSortOrder(SortOrder sortOrder) {
-		this.sortOrder = sortOrder;
-	}
+    public void setSortOrder(SortOrder sortOrder) {
+        this.sortOrder = sortOrder;
+    }
 
-	public String getFieldName() {
-		return fieldName;
-	}
+    public String getFieldName() {
+        return fieldName;
+    }
 
-	public void setFieldName(String fieldName) {
-		this.fieldName = fieldName;
-	}
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
 }

@@ -1,5 +1,6 @@
 package jay.lang;
 
 public enum CommonFaultCode implements IFaultCode {
-	INVALID_ARGUMENT
+    UNKNOWN_ERROR,
+    INVALID_ARGUMENT
 }

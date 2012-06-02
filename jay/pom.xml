@@ -7,7 +7,7 @@
   <packaging>pom</packaging>
   <name>jay</name>
   <modules>
-  	<module>lang</module>
+  	<module>jay-lang</module>
   	<module>jay-commons</module>
   	<module>jay-spring-hibernate</module>
   </modules>

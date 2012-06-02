@@ -8,7 +8,7 @@
   </parent>
   <groupId>com.corvid.jay</groupId>
   <artifactId>jay-lang</artifactId>
-  <name>Jay-lang</name>
+  <name>jay-lang</name>
   <dependencies>
   	<dependency>
   		<groupId>junit</groupId>

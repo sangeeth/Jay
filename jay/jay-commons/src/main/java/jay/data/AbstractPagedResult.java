@@ -1,9 +1,6 @@
 package jay.data;
 
-import java.io.Serializable;
-
-abstract public class AbstractSearchResult<E> implements SearchResult<E>,
-        Serializable {
+abstract public class AbstractPagedResult<E> implements PagedResult<E> {
     private static final long serialVersionUID = 1L;
 
     private int startIndex;
@@ -12,7 +9,7 @@ abstract public class AbstractSearchResult<E> implements SearchResult<E>,
 
     private int totalSize;
 
-    public AbstractSearchResult() {
+    public AbstractPagedResult() {
         super();
         this.totalSize = TOTAL_SIZE_UNKNOWN;
     }

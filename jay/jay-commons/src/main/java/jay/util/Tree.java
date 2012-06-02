@@ -7,9 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Tree<T extends Serializable> implements Collection<Tree<T>>, Serializable {
-	private static final long serialVersionUID = 1L;
-
-	private T value;
+       private static final long serialVersionUID = 1L;    
+    private T value;
     
     private List<Tree<T>> children;
     
