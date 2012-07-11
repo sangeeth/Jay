@@ -1,0 +1,8 @@
+---
+layout: master
+title: Home
+---
+
+h1. Welcome
+
+Welcome to project Jay, yet another open source Java SDK. The primary objective of project Jay is to provide foundation classes and libraries to accelerate Java based Desktop applications, Web applications, Platforms and RESTful Web Services.
