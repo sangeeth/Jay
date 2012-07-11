@@ -1,0 +1,13 @@
+---
+layout: master
+title: Archives
+---
+
+<h1>Archives</h1>
+
+{% for post in site.posts %}
+<div> 
+ <span class="metabar"><em><span class="date time published" title="{{ post.date | date_to_long_string | upcase }}">{{ post.date | date_to_long_string | upcase }}</span></em></span>
+ &#187; <a title="{{ post.title }}" href="{{ post.url }}">{{ post.title }}</a>
+</div>
+{% endfor %}

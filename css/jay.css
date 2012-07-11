@@ -1,0 +1,6 @@
+.icons .sangeethlabslink {
+    background: url("./images/sprite-logo.png") no-repeat 0 0 transparent;
+}
+.icons .sangeethlabslink:hover {
+    background: url("./images/sprite-logo.png") no-repeat scroll -22px 0 transparent;
+}

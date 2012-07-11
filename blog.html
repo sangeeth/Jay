@@ -1,0 +1,19 @@
+---
+layout: master
+title: Blog
+---
+
+<h1>Blog</h1>
+
+{% for post in site.posts limit:10 %}					
+<h4><a title="{{ post.title }}" href="{{ post.url }}">{{ post.title }}</a></h4>
+<div class="metabar">
+<em>
+  <span class="sword"> posted on </span>
+  <span class="date time published" title="{{ post.date | date_to_long_string }}">{{ post.date | date_to_long_string }}</span>
+</em>
+</div>																					
+{{ post.excerpt }} &nbsp;<a title="{{ post.title }}" href="{{ post.url }}">[&hellip;]</a>
+<br/><br/>
+
+{% endfor %}

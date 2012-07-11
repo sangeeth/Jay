@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+{% include head.html %}
+<body class="blog full_width ttype-posts tmain-posts">
+	<div id="site" class="one-sidebar-right">
+		<!-- #site // Wraps #header, #page-main, #footer - closed in footer -->
+		<div id="page">
+			<!-- #page // Wraps #header, #page-main - closed in footer -->
+			<div id="page-canvas">
+				{% include header.html %}
+				<div id="page-main" class="container-group fix">
+					<!-- #page-main // closed in footer -->
+					<div id="dynamic-content" class="outline fix">
+						<div id="maincontent" class="container fix">
+							<div class="texture">
+								<div class="content">
+									<div class="content-pad">
+										<div id="pagelines_content" class="one-sidebar-right fix">
+
+											<div id="column-wrap" class="fix">
+
+												<div id="column-main" class="mcolumn fix">
+													<div class="mcolumn-pad">
+														<div id="theloop" class="copy fix">
+															<div class="copy-pad">
+																<div
+																	class="post-10 page type-page status-publish hentry fpost"
+																	id="post-10">
+
+																	<div class="post-meta fix">
+
+																		<div class="post-header fix post-nothumb" style="">
+																			<div class="post-title-section fix">
+
+																				<div class="post-title fix">
+
+																					<h1 class="entry-title">{{ page.title }}</h1>
+																					<div class="metabar">
+																						<em><span class="sword"> posted on</span> <span
+																							class="date time published"
+																							title="{{ page.date | date_to_long_string }}">
+																							{{ page.date | date_to_long_string }}
+																							</span>
+																						</em>
+																					</div>
+																				</div>
+																			</div>
+
+
+																		</div>
+																	</div>
+
+																	<div class="entry_wrap fix">
+																		<div class="entry_content">
+																		{{ content }}
+																		</div>
+																		<div class="tags">&nbsp;</div>
+																	</div>
+																</div>
+																<div class="clear"></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="fix" id="sidebar-wrap">
+												<div class="scolumn fix" id="sidebar1">
+													<div class="scolumn-pad">
+														<div class="copy fix" id="sidebar_primary">
+															<div class="copy-pad">
+																{% include sidebar.html %}
+																<div class="clear"></div>
+															</div>
+														</div>
+
+													</div>
+												</div>
+											</div>
+
+										</div>
+										<div class="clear"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END #dynamic-content -->
+
+					<div id="morefoot_area">
+						<div id="morefoot" class="container fix">
+							<div class="texture">
+								<div class="content">
+									<div class="content-pad">
+										<div class="clear"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+
+				</div>
+				<!-- END #page-main from header -->
+			</div>
+			<!-- END #page-canvas from header -->
+		</div>
+		<!-- END #page from header -->
+
+        {% include footer.html %}
+
+	</div>
+</body>
+</html>

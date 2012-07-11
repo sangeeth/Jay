@@ -1,0 +1,92 @@
+
+<div id="footer">
+	<div class="outline fix">
+		<div id="footcols" class="container fix">
+			<div class="texture">
+				<div class="content">
+					<div class="content-pad">
+
+						<div id="fcolumns_container" class="dcol_container_5 fix">
+							<div class="dcol_5 dcol">
+								<div class="dcol-pad">
+									<h3 class="site-title">
+										<a class="home" href="http://sangeeth.github.com" title="Home">
+											Sangeeth Labs </a>
+									</h3>
+								</div>
+							</div>
+							<div class="dcol_5 dcol">
+								<div class="dcol-pad">
+									<h3 class="widget-title">Pages</h3>
+									<div class="footer-links list-links">
+										<ul>
+											<li class="page_item page-item-10 current_page_item"><a
+												href="/Jay/index.html">Home</a></li>
+											<li class="page_item page-item-17"><a href="/blog.html">Blog</a></li>
+											<li class="page_item page-item-2"><a
+												href="/Jay/archives.html">Archives</a></li>
+										</ul>
+									</div>
+
+								</div>
+							</div>
+							<div class="dcol_5 dcol">
+								<div class="dcol-pad">
+									<h3 class="widget-title">The Latest</h3>
+									<ul class="latest_posts">
+										<li class="list-item fix">
+											<div class="list_item_text">
+												{% for post in site.posts limit:1 %}
+												<h5>
+													<a class="list_text_link" href="{{ post.url }}"><span
+														class="list-title">{{ post.title }}</span> </a>
+												</h5>
+												<div class="list-excerpt">
+													{{ post.excerpt }}.&nbsp; <a class="list_text_link"
+														title="Read more" href="{{ post.url }}">[&hellip;] </a>
+												</div>
+												{% endfor %}
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="dcol_5 dcol">
+								<div class="dcol-pad">
+									<h3 class="widget-title">More</h3>
+									<div class="footer-links list-links">
+										<ul>
+											<li class="page_item page-item-10 current_page_item"><a
+												href="http://sangeeth.github.com/Jay/">Jay</a></li>
+											<li class="page_item page-item-22"><a
+												href="http://sangeeth.github.com/i18nHub/">i18nHub</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="dcol_5 dcol">
+								<div class="dcol-pad">
+									<div class="findent terms">© 2012 Sangeeth Labs.</div>
+									<div class="findent terms">
+										Powered by <a title="A static, minimalist CMS"
+											href="https://github.com/mojombo/jekyll">Jekyll</a> and <a
+											title="Social Coding" href="http://github.com">Github</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="cred" class="pagelines">
+			<a class="plimage" target="_blank"
+				href="http://sangeeth.github.com/" title="Sangeeth :-)"><img
+				src="/images/logo.png" alt="Sangeeth" /> </a>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+

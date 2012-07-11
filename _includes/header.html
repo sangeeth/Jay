@@ -1,0 +1,79 @@
+<div id="header" class="container-group fix">
+	<div class="outline">
+		<div id="branding" class="container fix">
+			<div class="texture">
+				<div class="content">
+					<div class="content-pad">
+						<div class="branding_wrap">
+							<a class="mainlogo-link" href="http://sangeeth.github.com/Jay"
+								title="Blue Jay"><img class="mainlogo-img"
+								src="/images/project-jay.png" alt="Project Jay" /> </a>
+							<div class="icons" style="bottom: 0px; right: px;">
+								<a title="Fork Me on GitHub" target="_blank" href="http://github.com/sangeeth/Jay"
+									class="githublink"></a> 
+							    <a title="My LinkedIn Profile" target="_blank"
+									href="http://in.linkedin.com/in/sangeeth" class="linkedinlink"></a>
+								<a title="My Tweets" target="_blank" href="http://www.twitter.com/sangeethlabs/"
+									class="twitterlink"></a>
+							    <a title="My Home" target="_blank" href="http://sangeeth.github.com/"
+									class="sangeethlabslink"></a>									
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="primary-nav" class="container fix">
+			<div class="texture">
+				<div class="content">
+					<div class="content-pad">
+						<div id="nav_row" class="main_nav fix">
+
+							<ul id="menu-nav" class="main-nav">
+								<li
+									class="page_item page-item-10
+												        {% if page.title == 'Home' %} 
+												          current_page_item
+												        {% endif %}  
+												          ">
+									<a href="/index.html">Home</a>
+								</li>
+								<li
+									class="page_item page-item-22
+												        {% if page.title == 'Blog' %} 
+												          current_page_item
+												        {% endif %}												
+												       ">
+									<a href="/blog.html">Blog</a>
+								</li>
+								<li
+									class="page_item page-item-22
+												        {% if page.title == 'Archives' %} 
+												          current_page_item
+												        {% endif %}
+												        ">
+									<a href="/archives.html">Archives</a>
+								</li>
+							</ul>
+
+							<form method="get" class="searchform"
+								onsubmit="alert('Sorry ! Yet to enable site search. :-)');return false;">
+								<fieldset>
+									<input type="text" value="Search" name="s" class="searchfield"
+										onfocus="if (this.value == 'Search') {this.value = '';}"
+										onblur="if (this.value == '') {this.value = 'Search';}" /> 
+								    <input
+										type="image" class="submit btn" name="submit"
+										src="/css/images/search-btn.png" alt="Go" />
+								</fieldset>
+							</form>
+						</div>
+
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

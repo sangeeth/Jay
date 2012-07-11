@@ -1,0 +1,53 @@
+<ul class="sidebar_widgets fix"  id="list_sidebar_primary">
+	<li class="widget_recent_entries widget fix"
+		id="recent-posts-2"><div class="widget-pad">
+			<h3 class="widget-title">Recent Posts</h3>
+			<ul>
+{% for post in site.posts limit:5 %}
+				<li>
+				<a title="{{ post.title }}" href="{{ post.url }}">{{ post.title }}</a>
+				</li>
+{% endfor %}			
+			</ul>
+		</div>
+	</li>
+	<li class="widget_meta widget fix" id="meta-2"><div
+			class="widget-pad">
+			<h3 class="widget-title">Tweets</h3>
+
+			<script>
+				new TWTR.Widget(
+						{
+							version : 2,
+							type : 'profile',
+							rpp : 4,
+							interval : 30000,
+							width : 230,
+							height : 300,
+							theme : {
+								shell : {
+									background : '#e6e6e6',
+									color : '#635f63'
+								},
+								tweets : {
+									background : '#f2f2f2',
+									color : '#696969',
+									links : '#458a96'
+								}
+							},
+							features : {
+								scrollbar : true,
+								loop : false,
+								live : true,
+								behavior : 'all'
+							}
+						})
+						.render()
+						.setUser(
+								'sangeethlabs')
+						.start();
+			</script>
+
+		</div>
+	</li>
+</ul>
