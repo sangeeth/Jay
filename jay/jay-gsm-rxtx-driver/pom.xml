@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.corvid</groupId>
+    <artifactId>jay</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <dependencies>
+   	<dependency>
+  		<groupId>com.corvid.jay</groupId>
+  		<artifactId>jay-gsm</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+	<dependency>
+		<groupId>org.rxtx</groupId>
+		<artifactId>rxtx</artifactId>
+		<version>2.1.7</version>
+	</dependency>   
+  </dependencies>
+  <groupId>com.corvid.jay</groupId>
+  <artifactId>jay-gsm-rxtx-driver</artifactId>
+  <name>jay-gsm-rxtx-driver</name>
+  <description>RxTx based jay-gsm driver</description>
+</project>
