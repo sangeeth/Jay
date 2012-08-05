@@ -30,12 +30,12 @@ public class SmsMessage implements Serializable {
 		this.id = id;
 	}
 
-	public String getSenderNumber() {
+	public String getSender() {
 		return sender;
 	}
 
-	public void setSenderNumber(String senderNumber) {
-		this.sender = senderNumber;
+	public void setSender(String sender) {
+		this.sender = sender;
 	}
 
 	public String getSenderName() {
