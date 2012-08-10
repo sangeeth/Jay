@@ -16,6 +16,9 @@ public class GsmModem {
 	private static final MessageFormat CMGR = new MessageFormat("AT+CMGR={0}");
 	private static final MessageFormat CMGD = new MessageFormat("AT+CMGD={0}");
 	private static final MessageFormat _CMGR = new MessageFormat("+CMGR: {0},{1},{2},{3}"); // +CMGR: "REC UNREAD","+919845525316",,"12/07/30,19:41:34+22"
+//	+CMGL: 1,"REC UNREAD","LM-SAMSNG",,"12/07/30,18:52:17+22"
+//	+CMGL: 11,"REC READ","+919790526118","Appa","11/04/05,08:13:54+22"
+	private static final MessageFormat _CMGL = new MessageFormat("+CMGL: {0},{1},{2},{3},{4}");
 
 	private Driver driver;
 	
@@ -60,6 +63,15 @@ public class GsmModem {
 		connection = driver.connect(portName, null);
 		
 		connection.addConnectionListener(new EventManager());
+		
+		// The following need to be moved to GSM modem
+		try {
+			sendCommand("AT");
+			sendCommand("AT+CMGF=1");
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}		
 		
 		return connection;
     }
@@ -213,12 +225,13 @@ public class GsmModem {
 					read = "\"REC READ\"".equals(args[0]);
 					sender = clipQuotes(args[1].toString());
 					senderName = clipQuotes(args[2].toString());
+					// TODO Need to process time,i.e. args[3]
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
-				for(int i=1;i<lines.length-2;i++) {
+				for(int i=1;i<lines.length-2;i++) { // last two lines are newline and OK respectively. So ignore
 					textBuffer.append(lines[i]).append('\n');
 				}
 
@@ -230,6 +243,65 @@ public class GsmModem {
 				message.setText(textBuffer.toString());
 				
 				notifySmsMessage(message);
+			} else if (commandString.equals("AT+CMGL=\"ALL\"")) {
+				int index = -1;
+				String sender = null;
+				String senderName = null;
+				boolean read = false;
+				StringBuffer textBuffer = new StringBuffer();
+				
+				List<SmsMessage> messages = new ArrayList<SmsMessage>();
+				
+				String [] lines = lines(responseText);
+				int lastLineIndex = lines.length-3;
+				for(int i=0;i<lines.length-2;i++) { // last two lines are newline and OK respectively. So ignore
+					String line = lines[i];
+					if (line.startsWith("+CMGL:")
+						|| i == lastLineIndex) {
+						
+						if (i == lastLineIndex) {
+							textBuffer.append(line);
+						}
+						
+						if (textBuffer.length()!=0) {
+							SmsMessage message = new SmsMessage();
+							message.setId(index);
+							message.setRead(read);
+							message.setSender(sender);
+							message.setSenderName(senderName);
+							message.setText(textBuffer.toString());
+							
+							messages.add(message);
+							
+							index = -1;
+							read = false;
+							sender = null;
+							senderName = null;
+							textBuffer.setLength(0);
+						}
+						
+						if (i!=lastLineIndex ) {
+							// +CMGL: 11,"REC READ","+919790526118","Appa","11/04/05,08:13:54+22"
+							try {
+								Object [] args = _CMGL.parse(line);
+								index = Integer.valueOf(args[0].toString()); 
+								read = "\"REC READ\"".equals(args[1]);
+								sender = clipQuotes(args[2].toString());
+								senderName = clipQuotes(args[3].toString());
+								// TODO Need to process time,i.e. args[4]
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					} else {
+						textBuffer.append(lines[i]).append('\n');
+					}
+				}
+
+				for(SmsMessage message:messages) {
+					notifySmsMessage(message);					
+				}
 			}
 		}
     }        
