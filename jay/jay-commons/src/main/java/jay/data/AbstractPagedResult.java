@@ -8,6 +8,8 @@ abstract public class AbstractPagedResult<E> implements PagedResult<E> {
     private int pageSize;
 
     private int totalSize;
+    
+    private boolean last;
 
     public AbstractPagedResult() {
         super();
@@ -39,5 +41,14 @@ abstract public class AbstractPagedResult<E> implements PagedResult<E> {
 
     public void setTotalSize(int totalSize) {
         this.totalSize = totalSize;
+    }
+
+    @Override
+    public boolean isLast() {
+        return last;
+    }
+
+    public void setLast(boolean last) {
+        this.last = last;
     }
 }

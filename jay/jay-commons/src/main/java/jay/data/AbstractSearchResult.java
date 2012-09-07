@@ -11,6 +11,8 @@ abstract public class AbstractSearchResult<E> implements SearchResult<E>,
     private int pageSize;
 
     private int totalSize;
+    
+    private boolean last;
 
     public AbstractSearchResult() {
         super();
@@ -42,5 +44,14 @@ abstract public class AbstractSearchResult<E> implements SearchResult<E>,
 
     public void setTotalSize(int totalSize) {
         this.totalSize = totalSize;
+    }
+
+    @Override
+    public boolean isLast() {
+        return last;
+    }
+
+    public void setLast(boolean last) {
+        this.last = last;
     }
 }

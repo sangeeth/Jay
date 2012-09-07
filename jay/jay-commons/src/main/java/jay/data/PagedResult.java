@@ -17,4 +17,6 @@ public interface PagedResult<E> extends Serializable{
     public int getTotalSize();
     
     public List<E> getItems();
+    
+    public boolean isLast();
 }
