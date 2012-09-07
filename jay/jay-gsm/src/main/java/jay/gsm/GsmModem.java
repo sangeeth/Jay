@@ -6,8 +6,12 @@ import java.io.StringReader;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import jay.util.LangUtil;
 
 public class GsmModem {
 	private static final Logger logger = Logger.getLogger(GsmModem.class.getName());
@@ -19,12 +23,18 @@ public class GsmModem {
 //	+CMGL: 1,"REC UNREAD","LM-SAMSNG",,"12/07/30,18:52:17+22"
 //	+CMGL: 11,"REC READ","+919790526118","Appa","11/04/05,08:13:54+22"
 	private static final MessageFormat _CMGL = new MessageFormat("+CMGL: {0},{1},{2},{3},{4}");
+//	+CPMS: "SM",0,25,"SM",0,25,"SM",0,25
+	private static final MessageFormat _CPMS = new MessageFormat("+CPMS: {0},{1},{2},{3},{4},{5},{6},{7},{8}");
 
 	private Driver driver;
 	
 	private Connection connection;
 	
 	private List<SmsMessageListener> listeners;
+	
+	private List<DeviceListener> deviceListeners;
+	
+	private String portName;
 
 //	private abstract static class At {
 //		abstract public static class Sms {
@@ -49,6 +59,7 @@ public class GsmModem {
 	
 	public GsmModem() {
 		listeners = new ArrayList<SmsMessageListener>();
+		this.deviceListeners = new ArrayList<DeviceListener>();
 	}
 	
     public Driver getDriver() {
@@ -60,18 +71,20 @@ public class GsmModem {
 	}
 
 	public Connection connect(String portName) throws Exception {
+	    
+	    this.portName = portName;
+	    
 		connection = driver.connect(portName, null);
 		
 		connection.addConnectionListener(new EventManager());
 		
-		// The following need to be moved to GSM modem
 		try {
 			sendCommand("AT");
 			sendCommand("AT+CMGF=1");
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}		
+		} catch (Exception e) {
+		    // FIXME Throw a new exception from here
+			throw new Exception("Failed to initialize GSM Modem");
+		}
 		
 		return connection;
     }
@@ -79,6 +92,20 @@ public class GsmModem {
 //    public float getSignalStrenth() {
 //    	return 0.0f; // [0.0f ... 1.0f]
 //    }
+	
+	public void addDeviceListener(DeviceListener l) {
+	    this.deviceListeners.add(l);
+	}
+	
+	public void removeDeviceListener(DeviceListener l) {
+	    this.deviceListeners.remove(l);
+	}
+	
+	protected void fireDeviceEvent(DeviceEvent e) {
+	    for(DeviceListener l:this.deviceListeners) {
+	        l.updateDeviceEvent(e);
+	    }
+	}
     
     public void addMessageListener(SmsMessageListener l) {
     	listeners.add(l);
@@ -89,13 +116,25 @@ public class GsmModem {
     }
     
     protected void notifySmsMessage(SmsMessage message) {
+        if (!isSmsMessageValid(message)) {
+            logger.log(Level.INFO,String.format("Deleting invalid message #[%s]",message.getId()));
+            try {
+                deleteMessage(message.getId());
+            } catch (Exception e) {
+                logger.log(Level.SEVERE,String.format("Failed to delete invalid message #[%s]: Cause {0}",message.getId()), e);
+            }
+            return;
+        }
+        
     	for(SmsMessageListener l:listeners) {
     		l.onSmsMessage(message);
     	}
     }
+
     
     public void fetchAllMessages() {
     	try {
+    	    connection.sendCommand("AT+CMGF=1"); // This is handle cases wherein the Mobile Equipment powered-off -> powered-on.
 			connection.sendCommand("AT+CMGL=\"ALL\"");
 		} catch (ConnectionException e) {
 			// TODO Auto-generated catch block
@@ -105,6 +144,7 @@ public class GsmModem {
     
     public void fetchMessage(int messageId) {
     	try {
+    	    connection.sendCommand("AT+CMGF=1"); // This is handle cases wherein the Mobile Equipment powered-off -> powered-on.
 			connection.sendCommand( CMGR.format(new Object[]{messageId}));
 		} catch (ConnectionException e) {
 			// TODO Auto-generated catch block
@@ -127,13 +167,8 @@ public class GsmModem {
 //    	
 //    }
     
-    public void deleteMessage(int messageId) {
-    	try {
-			connection.sendCommand(CMGD.format(new Object[]{messageId}));
-		} catch (ConnectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}    	
+    public void deleteMessage(int messageId) throws Exception {
+		connection.sendCommand(CMGD.format(new Object[]{messageId}));
     }
     
     public MessageStorageInfo getMessageStorageInfo() {
@@ -149,7 +184,16 @@ public class GsmModem {
     }
     
     public void close() throws Exception {
+        logger.log(Level.INFO,"Closing connection with the modem");
         this.connection.close();
+    }
+    
+    public void reset() throws Exception {
+        logger.log(Level.INFO,"Reseting connection with the modem");
+        this.close();
+        
+        logger.log(Level.INFO,"Creating new connection with the modem");
+        this.connect(this.portName);
     }
     
     String clipQuotes(String text) {
@@ -176,9 +220,47 @@ public class GsmModem {
 		return lines.toArray(new String[0]);
     }
     
+    private boolean isSmsMessageValid(SmsMessage message) {
+        if (message==null) {
+            return false;
+        }
+        
+        if (LangUtil.isEmpty(message.getSender())
+            ||LangUtil.isEmpty(message.getText())
+//            ||message.getTime()==null    // FIXME Need to handle this scenario in production code
+            ) {
+            return false;
+        }
+        
+        return true;
+    }
+    
     private class EventManager implements ConnectionListener 
     {
-    	@Override
+        @Override
+        public void onStateChanged(ConnectionState connectionState) {
+            switch(connectionState) {
+            case SUSPENDED:
+                logger.log(Level.SEVERE,"Modem connected is suspended. No commands will be executed further.");
+                break;
+            case DISCONNECTED:
+                logger.log(Level.SEVERE,"Modem is disconnected");
+                break;
+            case RESET:
+                try {
+                    reset();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.log(Level.SEVERE,"Failed to reset the connection with the modem.");    
+                }
+                break;
+            case ACTIVE:
+                logger.log(Level.INFO,"Connection is active");
+                break;
+            }
+        }
+
+        @Override
 		public void onUnsolicitedResult(UnsolicitedResult e) {
 			String text = e.getText();
 			
@@ -302,7 +384,25 @@ public class GsmModem {
 				for(SmsMessage message:messages) {
 					notifySmsMessage(message);					
 				}
+			} else if (commandString.equals("AT+CPMS?")) {
+                try {
+                    String [] lines = lines(responseText);
+                    if (lines.length==3) {
+                        Object [] args = _CPMS.parse(lines[0]);
+                        if (args.length==9) {
+                            if (!LangUtil.isEmpty((String)args[1])
+                                 && !LangUtil.isEmpty((String)args[2])) {
+                                int size = Integer.parseInt((String)args[1]);
+                                int capacity = Integer.parseInt((String)args[2]);
+                                
+                                fireDeviceEvent(new DeviceEvent(DeviceEvent.Type.MEMORY_SIZE, new Memory(size, capacity)));
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 			}
 		}
-    }        
+    }
 }
