@@ -12,12 +12,14 @@ import java.util.List;
 import java.util.Queue;
 import java.util.TooManyListenersException;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import jay.gsm.CommandResult;
 import jay.gsm.Connection;
 import jay.gsm.ConnectionException;
 import jay.gsm.ConnectionListener;
+import jay.gsm.ConnectionState;
 import jay.gsm.UnsolicitedResult;
 
 public class RxTxConnection implements Connection, SerialPortEventListener {
@@ -34,10 +36,13 @@ public class RxTxConnection implements Connection, SerialPortEventListener {
     private List<ConnectionListener> listeners;
     
     private Queue<String> commandQueue;
+    
+    private ConnectionState connectionState;
 	
 	public RxTxConnection(SerialPort serialPort) throws IOException, TooManyListenersException {
 		super();
 
+		this.connectionState = ConnectionState.ACTIVE;
 		this.serialPort = serialPort;
 		
         this.in = serialPort.getInputStream();
@@ -56,12 +61,21 @@ public class RxTxConnection implements Connection, SerialPortEventListener {
 	public long sendCommand(String command) throws ConnectionException {
 		
 		this.commandQueue.add(command);
+		
+		if (this.connectionState!=ConnectionState.ACTIVE) {
+		    return -1;
+		}
+		
 		System.out.println("Sending "+command);
 		command = command + "\r";
 		try {
 			out.write(command.getBytes());
 			out.flush();
 		} catch (IOException e) {
+		    // FIXME This mainly means the Mobile Equipment is not reachable. 
+		    // Hence it better to clear the command queue.
+		    logger.log(Level.WARNING, String.format("Failed to submit command %s. Probably the Stub is turned-off. Clearing the command-queue: %s", command, this.commandQueue));
+    		this.commandQueue.clear();    
 			// TODO Auto-generated catch block
 			throw new ConnectionException(e);
 		}
@@ -103,9 +117,6 @@ public class RxTxConnection implements Connection, SerialPortEventListener {
         	throw new ConnectionException(e);
         }
         
-		
-
-        
         if (this.serialPort!=null) {
             this.serialPort.removeEventListener();
             logger.info("Closing comm port");
@@ -124,6 +135,18 @@ public class RxTxConnection implements Connection, SerialPortEventListener {
         try {
             int len = 0;
             while ( ( data = in.read()) > -1 ) {
+                if (data=='\0') {
+//                    if (this.connectionState==ConnectionState.SUSPENDED) {
+//                        onStateChanged(ConnectionState.RESET);
+//                    } else {
+//                        onStateChanged(ConnectionState.SUSPENDED);
+//                    }
+                    String message = String.format("type: %s,  newValue: %s; oldValue: %s",event.getEventType(),
+                    event.getNewValue(),
+                    event.getOldValue());
+                    System.err.println("-----NULL-----" + message);
+//                    return;
+                }
                 if ( data == '\n' ) {
                     break;
                 }
@@ -137,7 +160,17 @@ public class RxTxConnection implements Connection, SerialPortEventListener {
             handleResponseLine(response);
         } catch ( IOException e ) {
             e.printStackTrace();
+            
+            onStateChanged(ConnectionState.DISCONNECTED);
         }    		
+	}
+	
+	private void onStateChanged(ConnectionState connectionState) {
+	    this.connectionState = connectionState;
+	    
+	    for(ConnectionListener l:this.listeners) {
+            l.onStateChanged(connectionState);
+        }
 	}
 	
 	private void onCommandExecuted(CommandResult commandResult) {
