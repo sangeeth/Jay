@@ -8,6 +8,8 @@ public interface Connection {
 	 */
 	public long sendCommand(String command) throws ConnectionException;
 	
+	public long sendBatchCommands(String... commands) throws ConnectionException;
+	
 	public String executeCommand(String command) throws ConnectionException;
 	
 	public void addConnectionListener(ConnectionListener l) throws ConnectionException;

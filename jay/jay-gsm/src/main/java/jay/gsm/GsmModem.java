@@ -24,7 +24,7 @@ public class GsmModem {
 //	+CMGL: 11,"REC READ","+919790526118","Appa","11/04/05,08:13:54+22"
 	private static final MessageFormat _CMGL = new MessageFormat("+CMGL: {0},{1},{2},{3},{4}");
 //	+CPMS: "SM",0,25,"SM",0,25,"SM",0,25
-	private static final MessageFormat _CPMS = new MessageFormat("+CPMS: {0},{1},{2},{3},{4},{5},{6},{7},{8}");
+	private static final MessageFormat _CPMS = new MessageFormat("+CPMS: {0},{1},{2}");
 
 	private Driver driver;
 	
@@ -79,8 +79,9 @@ public class GsmModem {
 		connection.addConnectionListener(new EventManager());
 		
 		try {
-			sendCommand("AT");
-			sendCommand("AT+CMGF=1");
+		    connection.sendBatchCommands("ATE0",
+			                             "AT",
+			                             "AT+CMGF=1");
 		} catch (Exception e) {
 		    // FIXME Throw a new exception from here
 			throw new Exception("Failed to initialize GSM Modem");
@@ -134,8 +135,8 @@ public class GsmModem {
     
     public void fetchAllMessages() {
     	try {
-    	    connection.sendCommand("AT+CMGF=1"); // This is handle cases wherein the Mobile Equipment powered-off -> powered-on.
-			connection.sendCommand("AT+CMGL=\"ALL\"");
+    	    connection.sendBatchCommands("AT+CMGF=1", // This is handle cases wherein the Mobile Equipment powered-off -> powered-on.
+    	                                 "AT+CMGL=\"ALL\""); 
 		} catch (ConnectionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -144,8 +145,8 @@ public class GsmModem {
     
     public void fetchMessage(int messageId) {
     	try {
-    	    connection.sendCommand("AT+CMGF=1"); // This is handle cases wherein the Mobile Equipment powered-off -> powered-on.
-			connection.sendCommand( CMGR.format(new Object[]{messageId}));
+    	    connection.sendBatchCommands("AT+CMGF=1", // This is handle cases wherein the Mobile Equipment powered-off -> powered-on.
+			                             CMGR.format(new Object[]{messageId}));
 		} catch (ConnectionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -276,17 +277,16 @@ public class GsmModem {
 				}
 			}
 			
-			System.out.println("$ " + e.getText());
+			logger.info("$ " + e.getText());
 		}
 		
 		@Override
 		public void onCommandExecuted(CommandResult commandResult) {
 			String responseText = commandResult.getResponseText().trim();
-			System.out.println("> " + commandResult.getCommandString());
-			System.out.printf("{\n%s\n}\n",responseText);
 			
 			String commandString = commandResult.getCommandString();
-			
+
+			logger.info(String.format("> %s\n{\n%s\n}\n", commandString, responseText));
 			if (commandString.startsWith("AT+CMGR=")){
 				int index = -1;
 				try {
