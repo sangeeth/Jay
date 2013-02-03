@@ -6,7 +6,6 @@ import java.io.StringReader;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +16,7 @@ public class GsmModem {
 	private static final Logger logger = Logger.getLogger(GsmModem.class.getName());
 
 	private static final MessageFormat CMTI = new MessageFormat("+CMTI: \"{0}\",{1}");
+	private static final MessageFormat CMGS = new MessageFormat("AT+CMGS=\"{0}\"\r{1}\u001A");
 	private static final MessageFormat CMGR = new MessageFormat("AT+CMGR={0}");
 	private static final MessageFormat CMGD = new MessageFormat("AT+CMGD={0}");
 	private static final MessageFormat _CMGR = new MessageFormat("+CMGR: {0},{1},{2},{3}"); // +CMGR: "REC UNREAD","+919845525316",,"12/07/30,19:41:34+22"
@@ -25,7 +25,7 @@ public class GsmModem {
 	private static final MessageFormat _CMGL = new MessageFormat("+CMGL: {0},{1},{2},{3},{4}");
 //	+CPMS: "SM",0,25,"SM",0,25,"SM",0,25
 	private static final MessageFormat _CPMS = new MessageFormat("+CPMS: {0},{1},{2}");
-
+	
 	private Driver driver;
 	
 	private Connection connection;
@@ -45,7 +45,7 @@ public class GsmModem {
 //	    	 * AT+CMGW="+919845525316"  <CR>
 //	         * Hello SMS<CTRL-Z> 
 //	         *
-//	         * ASCII equivalent of ctrl-z is #026
+//	         * ASCII equivalent of ctrl-z is #026 or \u001A
 //	    	 */		
 //			public static String CMGW(String receipient, String message) {
 //				return String.format("AT+CMGW=\"%s\"\n%s\u001A",receipient, message);
@@ -153,17 +153,17 @@ public class GsmModem {
 		}
     }
     
-//    public int sendMessage(String text, String receipient) throws ConnectionException {
-//		String response = this.connection.executeCommand(At.Sms.CMGW(receipient, text));
-//		
-//		Object[] args = parse(CMGW, response);
-//		Integer index = (Integer)args[0];
-//		
-//		response = this.connection.executeCommand(At.Sms.CMSS(index));
-//		
-//    	return index;
-//    }
-    
+    public void sendMessage(String text, String recipient) {
+    	try {
+    		text = text.replace('\n',(char)0x0A); // Replace all newline characters with LF (U+000A)
+    	    connection.sendBatchCommands("AT+CMGF=1",
+			                             CMGS.format(new Object[]{recipient, text}));
+		} catch (ConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+
 //    public void deleteAllMessages() {
 //    	
 //    }
