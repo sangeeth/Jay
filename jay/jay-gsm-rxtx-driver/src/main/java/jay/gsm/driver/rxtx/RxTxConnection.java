@@ -77,7 +77,7 @@ public class RxTxConnection implements Connection, SerialPortEventListener {
         
         this.listeners = new ArrayList<ConnectionListener>();
         
-        this.commandQueue = new ArrayBlockingQueue<Command>(50);
+        this.commandQueue = new ArrayBlockingQueue<Command>(100);
 	}
 	
 	private void issueNextCommand() {
