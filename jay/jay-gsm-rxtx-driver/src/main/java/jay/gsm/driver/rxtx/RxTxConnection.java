@@ -86,7 +86,7 @@ public class RxTxConnection implements Connection, SerialPortEventListener {
         }
 	    
 	    Command command = this.commandQueue.element();
-	    
+	    logger.fine(String.format("Current command: [{%s}]",command.getString()));
 	    if (!command.isIssued()) {
 	        logger.info(String.format("Posting command: [%s]",command));
 	        try {
@@ -109,13 +109,14 @@ public class RxTxConnection implements Connection, SerialPortEventListener {
 	
 	@Override
     public synchronized long sendBatchCommands(String... commands) throws ConnectionException {
-        boolean commandBeingExecuted = this.commandQueue.isEmpty();
+        boolean commandBeingExecuted = !this.commandQueue.isEmpty();
         
         for(String command:commands) {
            this.commandQueue.add(new Command(command));
         }
         
         if (commandBeingExecuted) {
+        	logger.log(Level.INFO, "Command being executed. Command Queue: {0}",commands);
             return 0;
         }
         
