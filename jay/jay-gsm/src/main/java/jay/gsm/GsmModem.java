@@ -145,6 +145,7 @@ public class GsmModem {
     
     public void fetchMessage(int messageId) {
     	try {
+    		logger.info(String.format("Fetch message by id: %s", messageId));
     	    connection.sendBatchCommands("AT+CMGF=1", // This is handle cases wherein the Mobile Equipment powered-off -> powered-on.
 			                             CMGR.format(new Object[]{messageId}));
 		} catch (ConnectionException e) {
